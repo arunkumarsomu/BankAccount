@@ -5,8 +5,9 @@ import java.text.NumberFormat;
 
 public class Account {
 
-	private final int accountId;
-	private String desc;
+	private int accountId ;
+	private static int trackId = 0;
+	private String description;
 	private String type;
 	private double balance;
 	private String firstName;
@@ -15,23 +16,53 @@ public class Account {
 	HashMap<Integer, String> TransLog = new HashMap<Integer, String>(); 
 	NumberFormat fmt = NumberFormat.getCurrencyInstance();
 	
-	public Account(int actid){
+	public Account(){
+		
+		this.accountId = trackId + 100;
+		this.balance = 0.0;
+		this.transactId = 0;
+		trackId += 100;
+				
+	}
+		
+	public Account(int actid, String desc){
 		this.accountId = actid;
 		this.balance = 0.0;
 		this.transactId = 0;
+		this.setDescription(desc);
 				
 	}
-	public void setAccountDetails(int actId, String type1, double bal, String firstNam, String lastNam ){
+	
+	public Account(String desc){
+		
+		this.balance = 0.0;
+		this.accountId = trackId + 100;
+		this.transactId = 0;
+		this.setDescription(desc);
+		trackId += 100;
+				
+	}
+	
+	public void setDescription(String desc){
+		this.description = desc;
+		
+	}
+	
+//	private void setAccountId(int acct){
+//		this.accountId = acct;
+//	}
+	
+	private void setAccountDetails(int actId, String type1, double bal, String firstNam, String lastNam ){
 //		this.accountId = actId;
 		this.type = type1;
 		this.balance = bal;
 		this.firstName = firstNam;
 		this.lastName = lastNam;
 		if ( type1 == "Savings" ){
-			this.desc = "My personal savings account";
+			this.description = "My personal savings account";
 		}
 		if ( type1 == "Checkings" ){
-			this.desc = "My personal checkings account";
+			this.description = "My personal checkings account";
 		}
 		
 	}
@@ -45,11 +76,16 @@ public class Account {
 	public double getBalance(){
 		return this.balance;
 	}
+	
+	private void setBalance(double amt){
+		 this.balance = amt;
+	}
+	
 	public String getName(){
 		return (this.firstName+this.lastName);
 	}
 	
-	public boolean withDraw(int acct, double amt){
+	public boolean withdraw(double amt){
 		this.transactId++;
 		String val = "Account :" + this.accountId + " Transaction :"+this.transactId;
 		
@@ -57,22 +93,22 @@ public class Account {
 		
 		if (balance >= amt){
 			balance -= amt;
-			System.out.println("Withdraw successfull for amount : "+fmt.format(amt));
-		    val +=  " Withdraw successfull for amount : "+fmt.format(amt);
+			System.out.println("withdraw successfull for amount : "+fmt.format(amt));
+		    val +=  " withdraw successfull for amount : "+fmt.format(amt);
 		    TransLog.put(this.transactId, val);
 			return true;
 		}
 		else {
-			System.out.println("Withdraw failed for amount : "+fmt.format(amt));
+			System.out.println("withdraw failed for amount : "+fmt.format(amt));
 			System.out.println("Insufficient funds!!!, balance is: "+fmt.format(balance));
-			val +=  " Withdraw failed for amount : "+fmt.format(amt);
+			val +=  " withdraw failed for amount : "+fmt.format(amt);
 			TransLog.put(this.transactId, val);
 			return false;
 		}
 				
 	}
 	
-	public void depositAmount(int acct, double amt){
+	public void deposit(double amt){
 		this.transactId++;
 		String val = "Account :" + this.accountId + " Transaction :"+this.transactId;
 		val +=  " Deposit successfull for amount : "+fmt.format(amt);
@@ -87,17 +123,24 @@ public class Account {
 			
 	}
 	
-	public void CheckingsToSavings(int checkingAcct, int savingAcct, double amt){
-		if (balance >= amt){
-			balance -= amt;
-			System.out.println("Withdraw successfull for amount : "+fmt.format(amt));
+	public void transferFrom(Account b, double amt){
+		System.out.println("*** Transfer ***");
+		if (b.withdraw(amt) ){
+	//		if (b.balance >= amt){
+//			b.balance -= amt;
+			this.deposit(amt);
+//			this.balance += amt;
+			System.out.println("Transfer successfull for amount : "+fmt.format(amt));
 		}
 		else if(balance < amt){
-			System.out.println("Withdraw failed for amount : "+fmt.format(amt));
-			System.out.println("Insufficient funds!!!, balance is: "+fmt.format(this.balance));
+//			System.out.println("withdraw failed for amount : "+fmt.format(amt));
+			System.out.println("Insufficient funds!!!, Transfer failed,balance is: "+fmt.format(this.balance));
 		}
 	}
 	
+	public String print(){
+		return ("Account "+this.accountId + " balance is " +fmt.format(this.balance) );
+	}
 	public void displayAccount(){
 		System.out.println(" *************************************************************");
 		System.out.printf("  Account number  ");
