@@ -99,7 +99,7 @@ public class Account {
 			return true;
 		}
 		else {
-			System.out.println("withdraw failed for amount : "+fmt.format(amt));
+		//	System.out.println("withdraw failed for amount : "+fmt.format(amt));
 			System.out.println("Insufficient funds!!!, balance is: "+fmt.format(balance));
 			val +=  " withdraw failed for amount : "+fmt.format(amt);
 			TransLog.put(this.transactId, val);
@@ -130,11 +130,11 @@ public class Account {
 //			b.balance -= amt;
 			this.deposit(amt);
 //			this.balance += amt;
-			System.out.println("Transfer successfull for amount : "+fmt.format(amt));
+		//	System.out.println("Transfer successfull for amount : "+fmt.format(amt));
 		}
 		else if(balance < amt){
 //			System.out.println("withdraw failed for amount : "+fmt.format(amt));
-			System.out.println("Insufficient funds!!!, Transfer failed,balance is: "+fmt.format(this.balance));
+	//		System.out.println("Insufficient funds!!!, Transfer failed,balance is: "+fmt.format(this.balance));
 		}
 	}
 	
@@ -155,12 +155,12 @@ public class Account {
 		
 	}
 	
-	public void displayTranslog(){
-		int size = TransLog.size();
-		for (int i=1;i<size+1;i++){
-			System.out.println(TransLog.get(i));
-		}
-				
-	}
+//	public void displayTranslog(){
+//		int size = TransLog.size();
+//		for (int i=1;i<size+1;i++){
+//			System.out.println(TransLog.get(i));
+//		}
+//				
+//	}
 	
 }
