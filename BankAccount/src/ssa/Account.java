@@ -48,6 +48,10 @@ public class Account {
 		
 	}
 	
+	public String getDescription(){
+		return this.description;
+	}
+	
 //	private void setId(int acct){
 //		this.Id = acct;
 //	}
